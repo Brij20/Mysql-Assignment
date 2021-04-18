@@ -1,0 +1,17 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `Purchase_Status`(cid integer) RETURNS varchar(20) CHARSET utf8mb4
+    DETERMINISTIC
+BEGIN
+	Declare Pstatus varchar(20);
+	Declare amt float;
+    Select sum(amount) into amt from payments where customernumber = cid order by customernumber;
+    
+    if amt < 25000.00 then
+    set Pstatus = 'Silver';
+    elseIf amt between 25000.00 and 50000.00 then
+    set Pstatus = 'Gold';
+    elseif amt > 50000.00 then
+    set Pstatus = 'Platinum';
+	end if;
+    
+RETURN Pstatus;
+END
